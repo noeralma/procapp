@@ -5,12 +5,14 @@ This is a production-ready template for building full-stack applications using T
 ## Tech Stack
 
 ### Frontend
+
 - **Framework:** React (via Vite)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
 - **State/Routing:** (Standard React hooks / React Router ready)
 
 ### Backend
+
 - **Runtime:** Node.js
 - **Framework:** Express.js
 - **Language:** TypeScript
@@ -28,6 +30,7 @@ This is a production-ready template for building full-stack applications using T
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v18+ recommended)
 - PostgreSQL database
 
@@ -36,12 +39,15 @@ This is a production-ready template for building full-stack applications using T
 1.  **Clone the repository** (if applicable)
 
 2.  **Install dependencies** (Root, Client, and Server):
+
     ```bash
     npm run install:all
     ```
 
 3.  **Environment Setup**:
+
     - Go to `server/.env` and configure your `DATABASE_URL`.
+
     ```env
     PORT=3000
     DATABASE_URL="postgresql://user:password@localhost:5432/mydb?schema=public"
@@ -74,12 +80,16 @@ npm run dev
 ## Directory Details
 
 ### Client (`/client`)
+
 Built with Vite + React + TypeScript + Tailwind CSS.
+
 - `src/App.tsx`: Main application component.
 - `src/index.css`: Tailwind directives and global styles.
 
 ### Server (`/server`)
+
 Built with Node.js + Express + TypeScript + Prisma.
+
 - `src/app.ts`: Express app setup (middleware, CORS, etc.).
 - `src/routes/`: API routes definitions.
 - `src/controllers/`: Request handlers.
@@ -87,4 +97,5 @@ Built with Node.js + Express + TypeScript + Prisma.
 - `prisma/schema.prisma`: Database schema definition.
 
 ## License
+
 ISC
