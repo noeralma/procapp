@@ -1,7 +1,30 @@
-# Inherits from root, but specific overrides if needed
+# Dependencies
 node_modules/
+
+# Build
 dist/
 
-# Prisma
-prisma/*.db
-prisma/*.db-journal
+# Database
+*.db
+*.db-journal
+dev.db
+test.db
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Editor
+.vscode/
+.idea/
+*.DS_Store
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -3,5 +3,40 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  name     String?
+  role     String   @default("USER")
+  reports  Report[]
+  approvals Approval[]
+}
+
+model Report {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  amount      Float
+  status      String   @default("PENDING")
+  editable    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  approvals   Approval[]
+}
+
+model Approval {
+  id        Int      @id @default(autoincrement())
+  action    String
+  comment   String?
+  createdAt DateTime @default(now())
+  reportId  Int
+  actorId   Int
+  report    Report   @relation(fields: [reportId], references: [id])
+  actor     User     @relation(fields: [actorId], references: [id])
 }

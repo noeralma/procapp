@@ -9,7 +9,18 @@ const app: Application = express();
 // Middleware
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    origin: (origin, callback) => {
+      const allowlist = [
+        process.env.CORS_ORIGIN || "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5173",
+      ];
+      if (!origin) return callback(null, true);
+      if (allowlist.includes(origin) || /^http:\/\/localhost:\d+$/.test(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   })
 );

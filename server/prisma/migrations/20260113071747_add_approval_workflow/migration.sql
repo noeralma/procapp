@@ -1,0 +1,11 @@
+-- CreateTable
+CREATE TABLE "Approval" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "action" TEXT NOT NULL,
+    "comment" TEXT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "reportId" INTEGER NOT NULL,
+    "actorId" INTEGER NOT NULL,
+    CONSTRAINT "Approval_reportId_fkey" FOREIGN KEY ("reportId") REFERENCES "Report" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Approval_actorId_fkey" FOREIGN KEY ("actorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
