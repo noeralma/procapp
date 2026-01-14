@@ -43,8 +43,15 @@ const Login: React.FC = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="p-8 bg-white rounded shadow-md w-96">
-        <h2 className="mb-6 text-2xl font-bold text-center">Login</h2>
-        {error && <p className="mb-4 text-red-500">{error}</p>}
+        <div className="flex justify-center mb-6">
+          <img src="/logo-main.svg" alt="PGN Logo" className="h-16 w-auto" />
+        </div>
+        <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">
+          Procurement System
+        </h2>
+        {error && (
+          <p className="mb-4 text-red-500 text-center text-sm">{error}</p>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block mb-2 text-sm font-bold text-gray-700">

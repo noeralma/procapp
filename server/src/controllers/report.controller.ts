@@ -23,7 +23,7 @@ export const createReport = async (req: AuthRequest, res: Response) => {
     });
 
     res.status(201).json(report);
-  } catch (error) {
+  } catch {
     res.status(500).json({ message: "Error creating report" });
   }
 };
@@ -42,7 +42,7 @@ export const getReports = async (req: AuthRequest, res: Response) => {
     let reports;
 
     if (role === "ADMIN") {
-      reports = await (prisma as any).report.findMany({
+      reports = await prisma.report.findMany({
         where: { createdAt: dateFilter.gte ? dateFilter : undefined },
         include: {
           user: { select: { name: true, email: true } },
@@ -69,7 +69,7 @@ export const getReports = async (req: AuthRequest, res: Response) => {
     }
 
     res.json(reports);
-  } catch (error) {
+  } catch {
     res.status(500).json({ message: "Error fetching reports" });
   }
 };
@@ -107,7 +107,7 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
       rejectedReports,
       totalAmount: totalAmount._sum.amount || 0,
     });
-  } catch (error) {
+  } catch {
     res.status(500).json({ message: "Error fetching stats" });
   }
 };
@@ -126,7 +126,7 @@ export const updateReport = async (req: AuthRequest, res: Response) => {
       },
       data: { status },
     });
-    await (prisma as any).approval.create({
+    await prisma.approval.create({
       data: {
         action: status,
         comment,
@@ -136,7 +136,7 @@ export const updateReport = async (req: AuthRequest, res: Response) => {
     });
 
     res.json(report);
-  } catch (error) {
+  } catch {
     res.status(500).json({ message: "Error updating report" });
   }
 };
@@ -153,7 +153,7 @@ export const requestChange = async (req: AuthRequest, res: Response) => {
       res.status(404).json({ message: "Report not found" });
       return;
     }
-    await (prisma as any).approval.create({
+    await prisma.approval.create({
       data: {
         action: "REQUEST_CHANGE",
         comment,
@@ -175,7 +175,7 @@ export const grantEdit = async (req: AuthRequest, res: Response) => {
       where: { id: Number(id) },
       data: { editable: true },
     });
-    await (prisma as any).approval.create({
+    await prisma.approval.create({
       data: {
         action: "CHANGE_GRANTED",
         comment,
@@ -193,12 +193,14 @@ export const denyChange = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const { comment } = req.body as { comment?: string };
-    const report = await prisma.report.findUnique({ where: { id: Number(id) } });
+    const report = await prisma.report.findUnique({
+      where: { id: Number(id) },
+    });
     if (!report) {
       res.status(404).json({ message: "Report not found" });
       return;
     }
-    await (prisma as any).approval.create({
+    await prisma.approval.create({
       data: {
         action: "CHANGE_DENIED",
         comment,
@@ -243,7 +245,7 @@ export const editReport = async (req: AuthRequest, res: Response) => {
         status: "PENDING",
       },
     });
-    await (prisma as any).approval.create({
+    await prisma.approval.create({
       data: {
         action: "USER_EDITED",
         comment,
@@ -265,7 +267,7 @@ export const deleteReport = async (req: AuthRequest, res: Response) => {
       },
     });
     res.json({ message: "Report deleted successfully" });
-  } catch (error) {
+  } catch {
     res.status(500).json({ message: "Error deleting report" });
   }
 };

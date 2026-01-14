@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80">
+  <!-- Background transparent -->
+  
+  <!-- PGN Text (Blue) -->
+  <text x="10" y="55" font-family="Arial, sans-serif" font-weight="bold" font-size="48" fill="#006CB7">PGN</text>
+  
+  <!-- Subtitle (Blue) -->
+  <text x="120" y="35" font-family="Arial, sans-serif" font-weight="bold" font-size="14" fill="#006CB7">PERTAMINA</text>
+  <text x="120" y="55" font-family="Arial, sans-serif" font-weight="bold" font-size="14" fill="#006CB7">GAS NEGARA</text>
+
+  <!-- Energy Wave/Drop Icon (Orange/Blue/Green) -->
+  <!-- Stylized droplet/flame shape common in Pertamina group -->
+  <path d="M250 20 Q280 20 280 50 Q280 70 250 70 Q220 70 220 50 Q220 20 250 20 Z" fill="#93C01F" opacity="0.8"/>
+  <path d="M265 20 Q295 20 295 50 Q295 70 265 70" fill="#006CB7" opacity="0.8"/>
+  <path d="M235 20 Q205 20 205 50 Q205 70 235 70" fill="#ED1C24" opacity="0.8"/>
+</svg>

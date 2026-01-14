@@ -21,6 +21,41 @@ const UserDashboard: React.FC = () => {
   const [message, setMessage] = useState("");
   const [month, setMonth] = useState<string>("");
 
+  const [editValues, setEditValues] = useState<Record<number, Partial<Report>>>(
+    {}
+  );
+
+  const handleEditChange = (
+    id: number,
+    field: keyof Report,
+    value: string | number
+  ) => {
+    setEditValues((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleSaveEdit = async (id: number) => {
+    const changes = editValues[id];
+    if (!changes) return;
+    try {
+      await api.put(`/reports/${id}/edit`, changes);
+      setMessage("Report updated successfully");
+      setEditValues((prev) => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
+      fetchReports();
+    } catch {
+      setMessage("Failed to update report");
+    }
+  };
+
   const fetchReports = useCallback(async () => {
     try {
       const data = await api.get<Report[]>(
@@ -149,8 +184,10 @@ const UserDashboard: React.FC = () => {
                       {report.editable ? (
                         <input
                           className="w-full px-2 py-1 border rounded"
-                          defaultValue={report.title}
-                          onBlur={(e) => (report.title = e.target.value)}
+                          value={editValues[report.id]?.title ?? report.title}
+                          onChange={(e) =>
+                            handleEditChange(report.id, "title", e.target.value)
+                          }
                         />
                       ) : (
                         report.title
@@ -161,9 +198,13 @@ const UserDashboard: React.FC = () => {
                         <input
                           type="number"
                           className="w-full px-2 py-1 border rounded"
-                          defaultValue={report.amount}
-                          onBlur={(e) =>
-                            (report.amount = Number(e.target.value))
+                          value={editValues[report.id]?.amount ?? report.amount}
+                          onChange={(e) =>
+                            handleEditChange(
+                              report.id,
+                              "amount",
+                              Number(e.target.value)
+                            )
                           }
                         />
                       ) : (
@@ -189,7 +230,14 @@ const UserDashboard: React.FC = () => {
                         : ""}
                     </td>
                     <td className="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                      {!report.editable && (
+                      {report.editable ? (
+                        <button
+                          onClick={() => handleSaveEdit(report.id)}
+                          className="text-green-600 hover:text-green-900"
+                        >
+                          Save
+                        </button>
+                      ) : (
                         <button
                           onClick={async () => {
                             const comment =
@@ -201,29 +249,9 @@ const UserDashboard: React.FC = () => {
                             setMessage("Change request submitted");
                             void fetchReports();
                           }}
-                          className="mr-2 text-indigo-600 hover:text-indigo-900"
+                          className="text-blue-600 hover:text-blue-900"
                         >
                           Request Change
-                        </button>
-                      )}
-                      {report.editable && (
-                        <button
-                          onClick={async () => {
-                            const note =
-                              window.prompt("Optional note with your edit") ||
-                              "";
-                            await api.put(`/reports/${report.id}/edit`, {
-                              title: report.title,
-                              amount: report.amount,
-                              description: report.description,
-                              comment: note,
-                            });
-                            setMessage("Report updated and sent for review");
-                            void fetchReports();
-                          }}
-                          className="text-green-600 hover:text-green-900"
-                        >
-                          Save Edit
                         </button>
                       )}
                     </td>
